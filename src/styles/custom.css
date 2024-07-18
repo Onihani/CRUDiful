@@ -1,0 +1,7 @@
+.screen-container {
+  @apply px-5;
+}
+
+.nav-link {
+  @apply text-[#222222] font-medium hover:text-[#6D787C];
+}
