@@ -7,5 +7,5 @@
 }
 
 .home-hero-area {
-  @apply h-[662px] bg-[#888888];
+  @apply h-[662px] bg-[#888888] shadow-lg;
 }

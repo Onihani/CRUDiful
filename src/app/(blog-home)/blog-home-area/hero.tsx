@@ -15,7 +15,7 @@ const HeroArea = () => {
     <section className="home-hero-area">
       <div className="w-full h-full grid grid-rows-[auto_1fr]">
         {/* add background area */}
-        <div className="p-6">
+        <div className="w-full p-6">
           <div className="w-full flex items-center justify-end">
             <Button
               className={classnames(
@@ -44,7 +44,7 @@ const HeroArea = () => {
                 markets.
               </p>
               {/* cta */}
-              <div className="flex flex-row flex-wrap gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 <Button
                   size="lg"
                   className="bg-white hover:bg-white hover:brightness-90 !py-3 md:!py-[15px] !px-6 !h-auto !text-[#222222] font-medium! rounded-full"
