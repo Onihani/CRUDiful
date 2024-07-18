@@ -1,3 +1,10 @@
+// components
+import { HeroArea } from "./blog-home-area";
+
 export default function BlogHome() {
-  return <div>Blog</div>;
+  return (
+    <>
+      <HeroArea />
+    </>
+  );
 }

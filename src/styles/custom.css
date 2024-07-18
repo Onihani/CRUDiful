@@ -5,3 +5,7 @@
 .nav-link {
   @apply text-[#222222] font-medium hover:text-[#6D787C];
 }
+
+.home-hero-area {
+  @apply h-[662px] bg-[#888888];
+}

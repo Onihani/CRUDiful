@@ -35,7 +35,7 @@ const Header = () => {
           {/* cta */}
           <Button
             className={classnames(
-              "bg-[#6D787C] !py-[9px] !px-[29px] !h-auto  !text-base font-medium!",
+              "bg-[#6D787C] !py-[9px] !px-[29px] !h-auto !text-base font-medium!",
               jost.className
             )}
           >
