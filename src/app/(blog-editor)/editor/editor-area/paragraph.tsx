@@ -1,15 +1,19 @@
 "use client";
 
 // react
-import { FC, FormEventHandler, PropsWithChildren } from "react";
+import { FC, FormEventHandler } from "react";
 
 // types
-type ParagraphProps = PropsWithChildren<{}>;
+type ParagraphProps = {
+  id: string;
+  value?: string | null;
+  onChange: (id: string, text: string | null) => void;
+};
 
-const Paragraph: FC<ParagraphProps> = ({ children }) => {
+const Paragraph: FC<ParagraphProps> = ({ id, value, onChange }) => {
   // handers
   const handleInput: FormEventHandler<HTMLParagraphElement> = (event) => {
-    console.log(event.currentTarget.textContent);
+    onChange(id, event.currentTarget.textContent);
   };
 
   return (
@@ -18,9 +22,8 @@ const Paragraph: FC<ParagraphProps> = ({ children }) => {
       onInput={handleInput}
       data-placeholder="Start your paragraph here.."
       className="paragraph"
-    >
-      {children}
-    </p>
+      dangerouslySetInnerHTML={{ __html: value ?? "" }}
+    />
   );
 };
 

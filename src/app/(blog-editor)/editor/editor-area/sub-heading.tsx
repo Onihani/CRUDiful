@@ -1,15 +1,19 @@
 "use client";
 
 // react
-import { FC, FormEventHandler, PropsWithChildren } from "react";
+import { FC, FormEventHandler } from "react";
 
 // types
-type SubHeadingProps = PropsWithChildren<{}>;
+type SubHeadingProps = {
+  id: string;
+  value?: string | null;
+  onChange: (id: string, text: string | null) => void;
+};
 
-const SubHeading: FC<SubHeadingProps> = ({ children }) => {
+const SubHeading: FC<SubHeadingProps> = ({ id, value, onChange }) => {
   // handers
   const handleInput: FormEventHandler<HTMLHeadingElement> = (event) => {
-    console.log(event.currentTarget.textContent);
+    onChange(id, event.currentTarget.textContent);
   };
 
   return (
@@ -18,9 +22,8 @@ const SubHeading: FC<SubHeadingProps> = ({ children }) => {
       onInput={handleInput}
       data-placeholder="Add a subheading"
       className="sub-heading"
-    >
-      {children}
-    </h2>
+      dangerouslySetInnerHTML={{ __html: value ?? "" }}
+    />
   );
 };
 

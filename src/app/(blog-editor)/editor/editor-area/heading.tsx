@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { FC, FormEventHandler, PropsWithChildren } from "react";
+import { FC, FormEventHandler } from "react";
 
 // fonts
 import { playfairDisplay } from "@/common/fonts";
@@ -10,12 +10,15 @@ import { playfairDisplay } from "@/common/fonts";
 import { classnames } from "@/common/helpers";
 
 // types
-type HeadingProps = PropsWithChildren<{}>;
+type HeadingProps = {
+  value?: string | null;
+  onChange: (text: string | null) => void;
+};
 
-const Heading: FC<HeadingProps> = ({ children }) => {
+const Heading: FC<HeadingProps> = ({ value , onChange}) => {
   // handers
   const handleInput: FormEventHandler<HTMLHeadingElement> = (event) => {
-    console.log(event.currentTarget.textContent);
+    onChange(event.currentTarget.textContent);
   };
 
   return (
@@ -24,9 +27,8 @@ const Heading: FC<HeadingProps> = ({ children }) => {
       onInput={handleInput}
       data-placeholder="Begin with an interesting heading here"
       className={classnames("heading", playfairDisplay.className)}
-    >
-      {children}
-    </h1>
+      dangerouslySetInnerHTML={{ __html: value ?? "" }}
+    />
   );
 };
 

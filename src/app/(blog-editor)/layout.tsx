@@ -1,5 +1,7 @@
 // next
 import type { Metadata } from "next";
+// imports
+import { Toaster } from 'sonner'
 
 // layouts
 import { BlogEditorLayout } from "@/components/layouts";
@@ -24,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={geist.className}>
+        <Toaster richColors position="top-right" />
         <BlogEditorLayout>{children}</BlogEditorLayout>
       </body>
     </html>
