@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 const Header = () => {
   return (
     <header className="bg-[#F4F4F4]">
-      <div className="p-8 flex flex-col md:flex-row md:items-center md:justify-between">
+      <div className="p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
         {/* back link */}
         <Link href="/" className="text-lg font-medium flex items-center gap-2">
           <ChevronLeft size={24} />
