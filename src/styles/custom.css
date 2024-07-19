@@ -15,7 +15,7 @@
 }
 
 .sub-heading {
-  @apply mb-6 text-[32px] font-semibold;
+  @apply mt-3 mb-6 text-[32px] font-semibold;
 }
 
 .paragraph {
@@ -26,25 +26,26 @@
   @apply text-[#666666];
 }
 
-.heading[contenteditable="true"],
-.sub-heading[contenteditable="true"],
-.paragraph[contenteditable="true"],
-.figcaption[contenteditable="true"] {
-  @apply focus:border focus:border-[#E20ABF] focus:outline-none;
+.heading,
+.sub-heading,
+.paragraph,
+.figcaption {
+  @apply focus:border focus:border-[#E20ABF] focus:outline-none cursor-text;
 }
 
-.heading[contenteditable="true"]:empty:not(:focus):before,
-.sub-heading[contenteditable="true"]:empty:not(:focus):before,
-.paragraph[contenteditable="true"]:empty:not(:focus):before,
-.figcaption[contenteditable="true"]:empty:not(:focus):before {
+.heading:empty:not(:focus):before,
+.sub-heading:empty:not(:focus):before,
+.paragraph:empty:not(:focus):before,
+.figcaption:empty:not(:focus):before {
   content: attr(data-placeholder);
+  white-space: pre-wrap;
 }
 
-.heading[contenteditable="true"]:empty:not(:focus):before {
+.heading:empty:not(:focus):before {
   color: #aaaaaa;
 }
 
-.sub-heading[contenteditable="true"]:empty:not(:focus):before,
-.paragraph[contenteditable="true"]:empty:not(:focus):before {
+.sub-heading:empty:not(:focus):before,
+.paragraph:empty:not(:focus):before {
   color: #bbbbbb;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { FC, FormEventHandler, useCallback, useState } from "react";
+import { FC, useCallback, useState } from "react";
 // next
 import NextImage from "next/image";
 // imports
@@ -10,6 +10,7 @@ import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 
 // components
 import CaptionButton from "./caption-button";
+import FigureCaption from "../figure-caption";
 
 // static assets
 import uploadSvg from "public/images/upload.svg";
@@ -20,9 +21,10 @@ type HeroImageProps = {
     url: string;
     alt?: string;
   };
+  onCaptionChange: (caption: string) => void;
 };
 
-const HeroImage: FC<HeroImageProps> = ({ image }) => {
+const HeroImage: FC<HeroImageProps> = ({ image, onCaptionChange }) => {
   const [uploadedImage, setUploadedImage] = useState<File>();
   const [captionEnabled, setCaptionEnabled] = useState(false);
 
@@ -68,8 +70,8 @@ const HeroImage: FC<HeroImageProps> = ({ image }) => {
     });
 
   // handlers
-  const handleCaptionInput: FormEventHandler<HTMLElement> = (event) => {
-    console.log(event.currentTarget.textContent);
+  const handleCaptionInput = (text: string) => {
+    onCaptionChange(text);
   };
 
   const handleEnableCaption = () => {
@@ -92,13 +94,7 @@ const HeroImage: FC<HeroImageProps> = ({ image }) => {
             className="mx-auto object-contain"
           />
           {captionEnabled ? (
-            <figcaption
-              contentEditable
-              onInput={handleCaptionInput}
-              data-placeholder="Write a caption here.."
-              className="figcaption"
-              dangerouslySetInnerHTML={{ __html: image?.alt ?? "" }}
-            />
+            <FigureCaption value={image?.alt} onChange={handleCaptionInput} />
           ) : (
             <CaptionButton onClick={handleEnableCaption} />
           )}

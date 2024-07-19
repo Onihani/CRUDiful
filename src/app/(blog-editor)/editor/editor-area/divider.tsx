@@ -3,11 +3,11 @@ import { FC } from "react";
 
 // types
 type DividerProps = {
-  id: string;
+  itemId: string;
 };
 
-const Divider: FC<DividerProps> = () => {
-  return <hr className="border-black/20 mb-8" />;
+const Divider: FC<DividerProps> = ({ itemId }) => {
+  return <hr className="border-black/20 my-10" />;
 };
 
 export default Divider;

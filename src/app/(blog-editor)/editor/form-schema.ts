@@ -12,7 +12,7 @@ export const articleSchema = z.object({
   }),
   content: z
     .object({
-      id: z.string(),
+      itemID: z.string(),
       type: z.enum(["sub-heading", "paragraph", "divider"]),
       value: z.string().optional(),
     })

@@ -1,7 +1,9 @@
 "use client";
 
 // react
-import { FC, FormEventHandler } from "react";
+import { FC, useCallback, useRef, useState, useLayoutEffect } from "react";
+// imports
+import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 // fonts
 import { playfairDisplay } from "@/common/fonts";
@@ -15,19 +17,31 @@ type HeadingProps = {
   onChange: (text: string | null) => void;
 };
 
-const Heading: FC<HeadingProps> = ({ value , onChange}) => {
+const Heading: FC<HeadingProps> = ({ value, onChange: onInputChange }) => {
+  // refs
+  const ref = useRef<HTMLHeadingElement>(null);
+  const [text, setText] = useState<string>("");
+
   // handers
-  const handleInput: FormEventHandler<HTMLHeadingElement> = (event) => {
-    onChange(event.currentTarget.textContent);
-  };
+  const handleInput = useCallback((event: ContentEditableEvent) => {
+    const updatedText = event.target.value;
+    setText(event.target.value);
+    onInputChange(updatedText);
+  }, []);
+
+  // effects
+  useLayoutEffect(() => {
+    if (value) setText(value);
+  }, []);
 
   return (
-    <h1
-      contentEditable
-      onInput={handleInput}
+    <ContentEditable
+      innerRef={ref}
+      html={text}
+      onChange={handleInput}
       data-placeholder="Begin with an interesting heading here"
       className={classnames("heading", playfairDisplay.className)}
-      dangerouslySetInnerHTML={{ __html: value ?? "" }}
+      tagName="h1"
     />
   );
 };
