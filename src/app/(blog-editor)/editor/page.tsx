@@ -40,7 +40,6 @@ import { ContentType } from "@/common/types";
 export default function BlogEditor() {
   // form
   const {
-    watch,
     getValues,
     setValue,
     control,

@@ -1,5 +1,7 @@
 // imports
 import { Plus, Dot } from "lucide-react";
+// next
+import Link from "next/link";
 
 // ui components
 import { Button } from "@/components/ui/button";
@@ -47,10 +49,13 @@ const HeroArea = () => {
               <div className="flex flex-col md:flex-row gap-3">
                 <Button
                   size="lg"
+                  asChild
                   className="bg-white hover:bg-white hover:brightness-90 !py-3 md:!py-[15px] !px-6 !h-auto !text-[#222222] font-medium! rounded-full"
                 >
-                  <span>Create new blog</span>
-                  <Plus size={20} className="ml-1.5" />
+                  <Link href="/editor?new" className="flex items-center justify-center gap-1.5">
+                    <span>Create new blog</span>
+                    <Plus size={20}/>
+                  </Link>
                 </Button>
                 <Button
                   size="lg"
