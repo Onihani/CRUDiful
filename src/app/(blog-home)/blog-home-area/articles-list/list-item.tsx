@@ -11,7 +11,7 @@ import testImage from "public/images/test.png";
 
 const ArticleListItem = () => {
   return (
-    <div className="bg-white p-6 grid md:grid-cols-12 gap-7 border border-black/10 rounded-xl">
+    <div className="bg-white p-6 grid md:grid-cols-12 gap-7 border border-black/10 rounded-xl shadow-sm">
       {/* image */}
       <div className="w-full md:col-span-3">
         <Image src={testImage} alt="test image" className="w-full rounded" />
