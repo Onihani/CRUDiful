@@ -30,7 +30,7 @@ import {
 import { useDeleteArticle } from "@/common/hooks";
 
 // helpers
-import { calcTimeAgo } from "@/common/helpers";
+import { calcTimeAgo, getBlogSummary } from "@/common/helpers";
 
 // types
 import { DraftArticle } from "@/common/types";
@@ -90,7 +90,9 @@ const DraftListItem: FC<ArticleListItemProps> = ({ draft }) => {
               Updated {calcTimeAgo(new Date(draft.updatedAt))} {"\u2022"} 5{" "}
               minute read
             </span>
-            <p className="text-[#666666] text-[17px]">{draft?.content}</p>
+            <p className="text-[#666666] text-[17px]">
+              {getBlogSummary(draft?.content || "")}
+            </p>
           </div>
           <div className="flex flex-col md:flex-row md:items-center md:justify-end gap-3.5">
             <Button

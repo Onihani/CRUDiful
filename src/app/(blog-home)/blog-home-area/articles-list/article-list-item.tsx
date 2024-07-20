@@ -30,7 +30,7 @@ import {
 import { useDeleteArticle } from "@/common/hooks";
 
 // helpers
-import { calcTimeAgo } from "@/common/helpers";
+import { calcTimeAgo, getBlogSummary } from "@/common/helpers";
 
 // types
 import { Article } from "@/common/types";
@@ -80,14 +80,16 @@ const ArticleListItem: FC<ArticleListItemProps> = ({ article }) => {
           />
         </div>
         {/* content */}
-        <div className="md:col-span-9 flex flex-col gap-5">
+        <div className="md:col-span-9 flex flex-col gap-5.value.substring(0, 20).trim();">
           <div className="flex flex-col gap-2">
             <h3 className="text-2xl font-semibold">{article.title}</h3>
             <span className="text-[#333333] text-sm">
               Published {calcTimeAgo(new Date(article.createdAt))} {"\u2022"} 5
               minute read
             </span>
-            <p className="text-[#666666] text-[17px]">{article.content}</p>
+            <p className="text-[#666666] text-[17px]">
+              {getBlogSummary(article.content || "")}
+            </p>
           </div>
           <div className="flex flex-col md:flex-row md:items-center md:justify-end gap-3.5">
             <Button

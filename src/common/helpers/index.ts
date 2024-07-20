@@ -15,3 +15,4 @@ export const isJsonString = (str: string) => {
 };
 
 export { default as calcTimeAgo } from "./calculate-time-ago";
+export { default as getBlogSummary } from "./get-content-summary";
