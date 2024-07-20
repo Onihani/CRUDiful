@@ -113,17 +113,7 @@ const DraftListItem: FC<ArticleListItemProps> = ({ draft }) => {
                 <DropdownMenuLabel>Manage Draft</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link
-                    href={{
-                      pathname: "/editor",
-                      query: {
-                        articleId: draft.id,
-                        articleType: "draft",
-                      },
-                    }}
-                  >
-                    Edit
-                  </Link>
+                  <Link href={`/editor/draft/${draft.id}`}>Edit</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setDeleteDraftModalOpen(true)}>
                   Delete
@@ -162,7 +152,7 @@ const DraftListItem: FC<ArticleListItemProps> = ({ draft }) => {
               onClick={() => setDeleteDraftModalOpen(false)}
               className="bg-white hover:bg-white hover:brightness-75 !py-[9px] !px-[29px] !h-auto text-[#333333] !text-base font-medium! border shadow"
             >
-              Go to Dashboard
+              Cancel
             </Button>
           </div>
         </DialogContent>

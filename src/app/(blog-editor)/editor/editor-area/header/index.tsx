@@ -4,6 +4,7 @@
 import { FC, useState } from "react";
 // next
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 // imports
 import { toast } from "sonner";
 import { ChevronLeft, Loader } from "lucide-react";
@@ -29,7 +30,7 @@ import {
 } from "@/common/hooks";
 
 // schema
-import { draftSchema } from "@/common/schemas";
+import { draftSchema, articleSchema } from "@/common/schemas";
 
 // types
 type HeaderProps = {
@@ -38,6 +39,9 @@ type HeaderProps = {
 };
 
 const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
+  // router
+  const router = useRouter();
+
   // hooks
   const form = useEditorForm();
   const { mutateAsync: newArticle } = useSaveArticle();
@@ -46,8 +50,12 @@ const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
   // state
   const [publishing, setPublishing] = useState(false);
   const [savingDraft, setSavingDraft] = useState(false);
-  const [publishModalOpen, setPublishModalOpen] = useState(false);
+  const [publishedModalOpen, setPublishedModalOpen] = useState(false);
   const [draftSavedModalOpen, setDraftSavedModalOpen] = useState(false);
+  const [newArticleData, setNewArticleData] = useState<{
+    id: string;
+    type: "draft" | "published";
+  }>();
 
   // handlers
   const handleSaveDraft = async () => {
@@ -100,8 +108,14 @@ const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
         });
       } else {
         // save draft
-        await newArticle({
+        const result = (await newArticle({
           data: draftData,
+          type: "draft",
+        })) as { draftId: string };
+
+        // set new article data
+        setNewArticleData({
+          id: result.draftId!,
           type: "draft",
         });
       }
@@ -116,8 +130,76 @@ const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
     }
   };
 
-  const handlePublish = () => {
-    console.log({ publish: form.getValues() });
+  const handlePublish = async () => {
+    setPublishing(true);
+
+    try {
+      const data = form.getValues();
+
+      // validate data
+      const validationResult = articleSchema.safeParse(data);
+
+      if (!validationResult.success) {
+        console.log(validationResult.error.errors);
+        validationResult.error.errors.forEach((error) => {
+          toast.error(error.message);
+        });
+        return;
+      }
+
+      // check if article as a file image and upload it before saving
+      let imageUrl: string | undefined;
+      if (data.image?.url instanceof File) {
+        const formData = new FormData();
+        formData.append("file", data.image.url);
+
+        const response = await axios.post("/upload/article", formData);
+        imageUrl = response.data.url as string;
+      } else {
+        imageUrl = data.image?.url;
+      }
+
+      // prepare data for saving
+      const articleData = {
+        title: data.title,
+        image: data.image?.url
+          ? {
+              alt: data.image.alt,
+              url: imageUrl!,
+            }
+          : undefined,
+        content: JSON.stringify(data.content),
+      };
+
+      if (articleId && articleType === "published") {
+        // update article
+        await updateArticle({
+          data: articleData,
+          type: "article",
+          id: articleId,
+        });
+      } else {
+        // save article
+        const result = (await newArticle({
+          data: articleData,
+          type: "article",
+        })) as { articleId: string };
+
+        // set new article data
+        setNewArticleData({
+          id: result.articleId!,
+          type: "published",
+        });
+      }
+
+      // show published modal
+      setPublishedModalOpen(true);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to publish article. Please try again.");
+    } finally {
+      setPublishing(false);
+    }
   };
 
   return (
@@ -148,7 +230,8 @@ const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
               onClick={handlePublish}
               className="bg-[#86005E] hover:bg-[#86005E] hover:brightness-75 !py-[9px] !px-[29px] !h-auto text-white !text-base font-medium! shadow"
             >
-              <span>Publish Blog</span>
+              {publishing && <Loader size={20} className="spin mr-2" />}
+              <span>{publishing ? "Publishing Blog" : "Publish Blog"}</span>
             </Button>
           </div>
         </div>
@@ -167,7 +250,49 @@ const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
           </DialogHeader>
           <div className="flex flex-col gap-3">
             <Button
-              onClick={() => setDraftSavedModalOpen(false)}
+              onClick={() => {
+                if (newArticleData) {
+                  router.replace(
+                    `/editor/${newArticleData.type}/${newArticleData.id}`,
+                  );
+                }
+                setDraftSavedModalOpen(false);
+              }}
+              className="bg-[#86005E] hover:bg-[#86005E] hover:brightness-75 !py-[9px] !px-[29px] !h-auto text-white !text-base font-medium! shadow"
+            >
+              Continue Editing
+            </Button>
+            <Button
+              asChild
+              className="bg-white hover:bg-white hover:brightness-75 !py-[9px] !px-[29px] !h-auto text-[#333333] !text-base font-medium! border shadow"
+            >
+              <Link href="/">Go to Dashboard</Link>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      {/* article saved modal */}
+      <Dialog open={publishedModalOpen} onOpenChange={setPublishedModalOpen}>
+        <DialogContent className="bg-white p-6 flex flex-col gap-6">
+          <DialogHeader className="flex flex-col gap-1">
+            <DialogTitle className="text-xl font-semibold">
+              Article Published Successfully
+            </DialogTitle>
+            <DialogDescription className="text-[#737373] text-base">
+              Article has been published successfully. You can view it on your
+              blog's dashboard area or continue editing it.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3">
+            <Button
+              onClick={() => {
+                if (newArticleData) {
+                  router.replace(
+                    `/editor/${newArticleData.type}/${newArticleData.id}`,
+                  );
+                }
+                setPublishedModalOpen(false);
+              }}
               className="bg-[#86005E] hover:bg-[#86005E] hover:brightness-75 !py-[9px] !px-[29px] !h-auto text-white !text-base font-medium! shadow"
             >
               Continue Editing
