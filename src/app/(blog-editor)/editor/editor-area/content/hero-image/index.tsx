@@ -103,7 +103,7 @@ const HeroImage: FC<HeroImageProps> = ({
             alt="test"
             className="mx-auto object-contain"
           />
-          {captionEnabled ? (
+          {captionEnabled || image?.alt ? (
             <FigureCaption value={image?.alt} onChange={handleCaptionInput} />
           ) : (
             <CaptionButton onClick={handleEnableCaption} />

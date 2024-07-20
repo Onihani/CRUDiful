@@ -96,7 +96,13 @@ const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
               url: imageUrl!,
             }
           : undefined,
-        content: JSON.stringify(data.content),
+        content: JSON.stringify(
+          data.content?.map((item) => ({
+            itemID: item.itemID,
+            type: item.type,
+            value: item.value,
+          }))
+        ),
       };
 
       if (articleId && articleType === "draft") {
@@ -168,7 +174,13 @@ const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
               url: imageUrl!,
             }
           : undefined,
-        content: JSON.stringify(data.content),
+        content: JSON.stringify(
+          data.content?.map((item) => ({
+            itemID: item.itemID,
+            type: item.type,
+            value: item.value,
+          }))
+        ),
       };
 
       if (articleId && articleType === "published") {
@@ -253,7 +265,7 @@ const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
               onClick={() => {
                 if (newArticleData) {
                   router.replace(
-                    `/editor/${newArticleData.type}/${newArticleData.id}`,
+                    `/editor/${newArticleData.type}/${newArticleData.id}`
                   );
                 }
                 setDraftSavedModalOpen(false);
@@ -288,7 +300,7 @@ const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
               onClick={() => {
                 if (newArticleData) {
                   router.replace(
-                    `/editor/${newArticleData.type}/${newArticleData.id}`,
+                    `/editor/${newArticleData.type}/${newArticleData.id}`
                   );
                 }
                 setPublishedModalOpen(false);
