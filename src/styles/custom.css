@@ -1,0 +1,65 @@
+.screen-container {
+  @apply px-5;
+}
+
+.nav-link {
+  @apply text-[#222222] font-medium hover:text-[#6D787C];
+}
+
+.home-hero-area {
+  @apply h-[662px] bg-[#888888] shadow-lg bg-cover bg-center bg-no-repeat;
+}
+
+.heading {
+  @apply mb-10 text-[42px] text-center;
+}
+
+.sub-heading {
+  @apply mt-3 mb-6 text-[32px] font-semibold;
+}
+
+.paragraph {
+  @apply mb-4 text-xl;
+}
+
+.figcaption {
+  @apply text-[#666666];
+}
+
+.heading,
+.sub-heading,
+.paragraph,
+.figcaption {
+  @apply focus:border focus:border-[#E20ABF] focus:outline-none cursor-text;
+}
+
+.heading:empty:not(:focus):before,
+.sub-heading:empty:not(:focus):before,
+.paragraph:empty:not(:focus):before,
+.figcaption:empty:not(:focus):before {
+  content: attr(data-placeholder);
+  white-space: pre-wrap;
+}
+
+.heading:empty:not(:focus):before {
+  color: #aaaaaa;
+}
+
+.sub-heading:empty:not(:focus):before,
+.paragraph:empty:not(:focus):before {
+  color: #bbbbbb;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* animations */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
