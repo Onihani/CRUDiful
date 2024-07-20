@@ -1,7 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-# Live Demo [CRUDiful](https://crudiful.vercel.app/)
-Url: https://crudiful.vercel.app/
+# Live Demo [CRUDiful](https://crudiful-web.vercel.app/)
+Url: https://crudiful-web.vercel.app/
 
 ## Running Locally
 
