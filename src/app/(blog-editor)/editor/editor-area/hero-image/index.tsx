@@ -18,13 +18,18 @@ import uploadSvg from "public/images/upload.svg";
 // types
 type HeroImageProps = {
   image?: {
-    url: string;
+    url: string | File;
     alt?: string;
   };
+  onImageChange: (file: File) => void;
   onCaptionChange: (caption: string) => void;
 };
 
-const HeroImage: FC<HeroImageProps> = ({ image, onCaptionChange }) => {
+const HeroImage: FC<HeroImageProps> = ({
+  image,
+  onCaptionChange,
+  onImageChange,
+}) => {
   const [uploadedImage, setUploadedImage] = useState<File>();
   const [captionEnabled, setCaptionEnabled] = useState(false);
 
@@ -51,6 +56,7 @@ const HeroImage: FC<HeroImageProps> = ({ image, onCaptionChange }) => {
         }
 
         setUploadedImage(file);
+        onImageChange(file);
       };
 
       image.src = URL.createObjectURL(file);
@@ -86,10 +92,14 @@ const HeroImage: FC<HeroImageProps> = ({ image, onCaptionChange }) => {
 
   return (
     <div className="mb-10">
-      {image || uploadedImage ? (
+      {image?.url || uploadedImage ? (
         <figure className="flex flex-col gap-5">
           <img
-            src={image?.url ?? URL.createObjectURL(uploadedImage!)}
+            src={
+              Boolean(uploadedImage instanceof File)
+                ? URL.createObjectURL(uploadedImage!)
+                : image?.url as string
+            }
             alt="test"
             className="mx-auto object-contain"
           />

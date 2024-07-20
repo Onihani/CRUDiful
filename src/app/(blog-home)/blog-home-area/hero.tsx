@@ -21,8 +21,15 @@ type HeroAreaProps = {
 
 const HeroArea: FC<HeroAreaProps> = ({ cover }) => {
   return (
-    <section className="home-hero-area">
-      <div className="w-full h-full grid grid-rows-[auto_1fr]">
+    <section
+      className="home-hero-area"
+      style={cover ? { backgroundImage: `url(${cover})` } : {}}
+    >
+      <div
+        className={classnames("w-full h-full grid grid-rows-[auto_1fr]", {
+          "bg-black/30 backdrop-filter backdrop-blur-[2px]": Boolean(cover),
+        })}
+      >
         {/* add background area */}
         <div className="w-full p-6">
           <div className="w-full flex items-center justify-end">

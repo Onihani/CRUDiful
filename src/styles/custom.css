@@ -7,7 +7,7 @@
 }
 
 .home-hero-area {
-  @apply h-[662px] bg-[#888888] shadow-lg;
+  @apply h-[662px] bg-[#888888] shadow-lg bg-cover bg-center bg-no-repeat;
 }
 
 .heading {
@@ -48,4 +48,18 @@
 .sub-heading:empty:not(:focus):before,
 .paragraph:empty:not(:focus):before {
   color: #bbbbbb;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* animations */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
 }

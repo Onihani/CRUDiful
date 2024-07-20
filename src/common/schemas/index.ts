@@ -3,11 +3,13 @@ import { z } from "zod";
 
 // schema
 export const articleSchema = z.object({
-  title: z.string({
-    required_error: "Title is required",
-  }),
+  title: z
+    .string({
+      required_error: "Title is required",
+    })
+    .min(3, "Title must be at least 3 characters"),
   image: z.object({
-    url: z.string(),
+    url: z.union([z.string().url(), z.instanceof(File)]),
     alt: z.string().trim().optional(),
   }),
   content: z

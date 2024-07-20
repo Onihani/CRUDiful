@@ -1,9 +1,10 @@
 "use client";
 
+// react
+import { useLayoutEffect } from "react";
 // imports
 import { Plus } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 
 // components
 import {
@@ -28,8 +29,8 @@ const ContentComponents = {
   [ContentType.divider]: Divider,
 };
 
-// schema
-import { draftSchema, DraftInputs } from "./form-schema";
+// hooks
+import { useEditorForm } from "@/common/hooks";
 
 // helpers
 import { generateId } from "@/common/helpers";
@@ -40,32 +41,12 @@ import { ContentType } from "@/common/types";
 export default function BlogEditor() {
   // form
   const {
-    getValues,
+    reset,
     setValue,
+    getValues,
     control,
     formState: { errors },
-  } = useForm<DraftInputs>({
-    defaultValues: {
-      title: "",
-      // image: {
-      //   url: "",
-      //   alt: "",
-      // },
-      content: [
-        {
-          itemID: generateId("sub-heading"),
-          type: "sub-heading",
-          value: "",
-        },
-        {
-          itemID: generateId("paragraph"),
-          type: "paragraph",
-          value: "",
-        },
-      ],
-    },
-    resolver: zodResolver(draftSchema),
-  });
+  } = useEditorForm();
   const contentFieldArray = useFieldArray({
     name: "content",
     control: control,
@@ -74,6 +55,10 @@ export default function BlogEditor() {
   // handlers
   const handleHeadingChange = (text: string | null) => {
     if (text) setValue("title", text);
+  };
+
+  const handleImageChange = (file: File | null) => {
+    if (file) setValue("image.url", file);
   };
 
   const handleImageCaptionChange = (text: string | null) => {
@@ -108,6 +93,14 @@ export default function BlogEditor() {
     if (contentIndex) contentFieldArray.remove(contentIndex);
   };
 
+  // effects
+  useLayoutEffect(() => {
+    return () => {
+      // cleanup
+      reset();
+    };
+  }, []);
+
   console.log({
     data: getValues(),
   });
@@ -118,6 +111,7 @@ export default function BlogEditor() {
         <Heading value={getValues("title")} onChange={handleHeadingChange} />
         <HeroImage
           image={getValues("image")}
+          onImageChange={handleImageChange}
           onCaptionChange={handleImageCaptionChange}
         />
         <hr className="border-black/20 mb-8" />

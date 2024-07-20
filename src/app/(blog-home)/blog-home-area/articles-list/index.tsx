@@ -3,7 +3,8 @@ import { FC } from "react";
 
 // components
 import EmptyState from "./empty-state";
-import ArticleListItem from "./list-item";
+import DraftListItem from "./draft-list-item";
+import ArticleListItem from "./article-list-item";
 
 // ui components
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -60,7 +61,7 @@ const ArticlesList: FC<ArticlesListProps> = ({
               <TabsContent value="drafts">
                 <div className="flex flex-col gap-5">
                   {drafts.map((draft) => (
-                    <ArticleListItem key={draft.id} article={draft} />
+                    <DraftListItem key={draft.id} draft={draft} />
                   ))}
                 </div>
               </TabsContent>
