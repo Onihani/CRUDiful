@@ -280,7 +280,7 @@ const EditorHeader: FC<HeaderProps> = ({ articleId, articleType }) => {
             </DialogTitle>
             <DialogDescription className="text-[#737373] text-base">
               Article has been published successfully. You can view it on your
-              blog's dashboard area or continue editing it.
+              {"blog's"} dashboard area or continue editing it.
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-3">
