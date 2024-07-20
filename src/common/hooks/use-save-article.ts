@@ -21,7 +21,7 @@ export const saveArticle = async (variables: {
 }) => {
   const apiPath = variables.type === "draft" ? "/drafts" : "/articles";
   const { data: draft } = await axios.post(apiPath, variables.data);
-  return draft as { message: string };
+  return draft as { draftId: string } | { articleId: string };
 };
 
 // hooks

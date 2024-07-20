@@ -12,7 +12,7 @@ type DeleteArticleInput = {
 
 // fetcher
 export const deleteArticle = async (variables: DeleteArticleInput) => {
-  const apiPath = variables.type === "draft" ? "/drafts" : "/articles";
+  const apiPath = variables.type === "draft" ? "drafts" : "articles";
   await axios.delete(`/${apiPath}/${variables.id}`);
 };
 
