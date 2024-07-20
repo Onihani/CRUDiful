@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dialog";
 
 // hooks
-import { useDeleteDraft } from "@/common/hooks";
+import { useDeleteArticle } from "@/common/hooks";
 
 // helpers
 import { calcTimeAgo } from "@/common/helpers";
@@ -44,14 +44,17 @@ const DraftListItem: FC<ArticleListItemProps> = ({ draft }) => {
   const [deleteDraftModalOpen, setDeleteDraftModalOpen] = useState(false);
 
   // hooks
-  const { mutateAsync: deleteDraft } = useDeleteDraft();
+  const { mutateAsync: deleteDraft } = useDeleteArticle();
 
   // handlers
   const handleDeleteDraft = async () => {
     setDeleting(true);
 
     try {
-      await deleteDraft(draft.id);
+      await deleteDraft({
+        id: draft.id,
+        type: "draft",
+      });
       setDeleteDraftModalOpen(false);
 
       // show toast
@@ -84,7 +87,7 @@ const DraftListItem: FC<ArticleListItemProps> = ({ draft }) => {
           <div className="flex flex-col gap-2">
             <h3 className="text-2xl font-semibold">{draft.title}</h3>
             <span className="text-[#333333] text-sm">
-              Published {calcTimeAgo(new Date(draft.createdAt))} {"\u2022"} 5{" "}
+              Updated {calcTimeAgo(new Date(draft.updatedAt))} {"\u2022"} 5{" "}
               minute read
             </span>
             <p className="text-[#666666] text-[17px]">{draft?.content}</p>

@@ -21,16 +21,9 @@ import {
 // types
 import { draftSchema, DraftInputs } from "@/common/schemas";
 import { Article, DraftArticle } from "@/common/types";
-type BlogEditorLayoutProps = PropsWithChildren<{
-  article: Article | DraftArticle;
-  articleType?: "draft" | "published";
-}>;
+type BlogEditorLayoutProps = PropsWithChildren<{}>;
 
-const BlogEditorLayout: FC<BlogEditorLayoutProps> = ({
-  article,
-  articleType,
-  children,
-}) => {
+const BlogEditorLayout: FC<BlogEditorLayoutProps> = ({ children }) => {
   // hooks
   const form = useForm<DraftInputs>({
     defaultValues: {
@@ -62,7 +55,7 @@ const BlogEditorLayout: FC<BlogEditorLayoutProps> = ({
       }}
     >
       <main>
-        <Header articleId={article?.id} articleType={articleType} />
+        <Header articleId={""} articleType={"draft"} />
         {children}
       </main>
     </EditorProvider>

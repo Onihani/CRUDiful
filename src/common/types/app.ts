@@ -21,3 +21,9 @@ export type Blog = {
   articles: Article[];
   drafts: DraftArticle[];
 };
+
+export type BlogContent = {
+  type: "sub-heading" | "paragraph" | "divider";
+  itemID: string;
+  value?: string | undefined;
+};

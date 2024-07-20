@@ -1,12 +1,14 @@
+"use client"
+
 // imports
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // config
 import { axios } from "@/common/config";
 
-// schemas
+// type
 import { DraftInputs } from "../schemas";
-type SaveDraftInput = Omit<DraftInputs, "image" | "content"> & {
+type UpdateDraftInput = Omit<DraftInputs, "image" | "content"> & {
   image?: {
     url: string;
     alt?: string;
@@ -15,24 +17,23 @@ type SaveDraftInput = Omit<DraftInputs, "image" | "content"> & {
 };
 
 // fetcher
-export const saveDraft = async (variables: {
-  data: SaveDraftInput;
-  draftId?: string;
+export const updateArticle = async (variables: {
+  data: UpdateDraftInput;
+  type: "draft" | "article";
+  id: string;
 }) => {
-  const apiPath = variables.draftId
-    ? `/drafts/${variables.draftId}`
-    : "/drafts";
-  const { data: draft } = await axios.post(apiPath, variables.data);
+  const apiPath = variables.type === "draft" ? "drafts" : "articles";
+  const { data: draft } = await axios.put(`/${apiPath}/${variables.id}`, variables.data);
   return draft as { message: string };
 };
 
 // hooks
-const useSaveDraft = () => {
+const useUpdateArticle = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["save-draft"],
-    mutationFn: saveDraft,
+    mutationKey: ["update-article"],
+    mutationFn: updateArticle,
     onSettled: () => {
       // revalidate blog query
       queryClient.invalidateQueries({
@@ -42,4 +43,4 @@ const useSaveDraft = () => {
   });
 };
 
-export default useSaveDraft;
+export default useUpdateArticle;
