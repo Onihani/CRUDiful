@@ -1,8 +1,13 @@
-// next
-import type { Metadata } from "next";
+"use client";
+
+// imports
+import { QueryClientProvider } from "@tanstack/react-query";
 
 // layouts
 import { BlogHomeLayout } from "@/components/layouts";
+
+// config
+import { queryClient } from "@/common/config";
 
 // fonts
 import { geist } from "@/common/fonts";
@@ -10,12 +15,6 @@ import { geist } from "@/common/fonts";
 // styles
 import "@/styles/globals.css";
 import "@/styles/custom.css";
-
-export const metadata: Metadata = {
-  title: "Investor Daily Dubai",
-  description:
-    "A blog sharing daily updates in Dubai Real Estate and Investment markets",
-};
 
 export default function RootLayout({
   children,
@@ -25,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={geist.className}>
-        <BlogHomeLayout>{children}</BlogHomeLayout>
+        <QueryClientProvider client={queryClient}>
+          <BlogHomeLayout>{children}</BlogHomeLayout>
+        </QueryClientProvider>
       </body>
     </html>
   );

@@ -1,10 +1,14 @@
-// next
-import type { Metadata } from "next";
+"use client";
+
 // imports
-import { Toaster } from 'sonner'
+import { Toaster } from "sonner";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 // layouts
 import { BlogEditorLayout } from "@/components/layouts";
+
+// config
+import { queryClient } from "@/common/config";
 
 // fonts
 import { geist } from "@/common/fonts";
@@ -12,11 +16,6 @@ import { geist } from "@/common/fonts";
 // styles
 import "@/styles/globals.css";
 import "@/styles/custom.css";
-
-export const metadata: Metadata = {
-  title: "Blog Editor",
-  description: "A blog editor for creating and managing blog posts",
-};
 
 export default function RootLayout({
   children,
@@ -27,7 +26,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={geist.className}>
         <Toaster richColors position="top-right" />
-        <BlogEditorLayout>{children}</BlogEditorLayout>
+        <QueryClientProvider client={queryClient}>
+          <BlogEditorLayout>{children}</BlogEditorLayout>
+        </QueryClientProvider>
       </body>
     </html>
   );

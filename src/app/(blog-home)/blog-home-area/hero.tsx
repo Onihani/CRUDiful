@@ -1,3 +1,5 @@
+// react
+import { FC } from "react";
 // imports
 import { Plus, Dot } from "lucide-react";
 // next
@@ -12,7 +14,12 @@ import { jost, playfairDisplay } from "@/common/fonts";
 // helpers
 import { classnames } from "@/common/helpers";
 
-const HeroArea = () => {
+// types
+type HeroAreaProps = {
+  cover?: string;
+};
+
+const HeroArea: FC<HeroAreaProps> = ({ cover }) => {
   return (
     <section className="home-hero-area">
       <div className="w-full h-full grid grid-rows-[auto_1fr]">
@@ -52,9 +59,12 @@ const HeroArea = () => {
                   asChild
                   className="bg-white hover:bg-white hover:brightness-90 !py-3 md:!py-[15px] !px-6 !h-auto !text-[#222222] font-medium! rounded-full"
                 >
-                  <Link href="/editor?new" className="flex items-center justify-center gap-1.5">
+                  <Link
+                    href="/editor?new"
+                    className="flex items-center justify-center gap-1.5"
+                  >
                     <span>Create new blog</span>
-                    <Plus size={20}/>
+                    <Plus size={20} />
                   </Link>
                 </Button>
                 <Button
