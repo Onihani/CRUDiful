@@ -30,10 +30,10 @@ import {
 import { useDeleteArticle } from "@/common/hooks";
 
 // helpers
-import { calcTimeAgo, getBlogSummary } from "@/common/helpers";
+import { calcTimeAgo, getBlogSummary, isJsonString } from "@/common/helpers";
 
 // types
-import { DraftArticle } from "@/common/types";
+import { DraftArticle, ArticleContent } from "@/common/types";
 type ArticleListItemProps = {
   draft: DraftArticle;
 };
@@ -41,6 +41,7 @@ type ArticleListItemProps = {
 const DraftListItem: FC<ArticleListItemProps> = ({ draft }) => {
   // state
   const [deleting, setDeleting] = useState(false);
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
   const [deleteDraftModalOpen, setDeleteDraftModalOpen] = useState(false);
 
   // hooks
@@ -97,6 +98,7 @@ const DraftListItem: FC<ArticleListItemProps> = ({ draft }) => {
           <div className="flex flex-col md:flex-row md:items-center md:justify-end gap-3.5">
             <Button
               variant="outline"
+              onClick={() => setPreviewModalOpen(true)}
               className=" hover:brightness-90 !text-[#222222]"
             >
               Open Blog
@@ -156,6 +158,66 @@ const DraftListItem: FC<ArticleListItemProps> = ({ draft }) => {
             >
               Cancel
             </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      {/* preview dialog */}
+      <Dialog open={previewModalOpen} onOpenChange={setPreviewModalOpen}>
+        <DialogContent className="bg-white p-6 !max-h-[calc(100vh_-_20%)] !max-w-4xl !w-full overflow-hidden grid-rows-[auto_1fr]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">
+              Draft Preview
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 overflow-y-scroll">
+            <div className="max-w-4xl mx-auto py-5">
+              <h2 className="heading">{draft.title}</h2>
+              <div className="mb-10">
+                <figure className="flex flex-col gap-5">
+                  <img
+                    src={
+                      draft.image?.url ||
+                      "https://placehold.co/600x400?text=Image+Placeholder"
+                    }
+                    alt={draft?.image?.alt ?? "N/A"}
+                    className="mx-auto object-contain"
+                  />
+
+                  <figcaption>{draft.image?.alt ?? "N/A"}</figcaption>
+                </figure>
+              </div>
+              <hr className="border-black/20 mb-8" />
+              {typeof draft?.content === "string" &&
+              isJsonString(draft.content) &&
+              Array.isArray(JSON.parse(draft.content)) ? (
+                (JSON.parse(draft.content) as ArticleContent[]).map(
+                  (contentItem) => {
+                    switch (contentItem.type) {
+                      case "sub-heading":
+                        return (
+                          <h3 key={contentItem.itemID} className="sub-heading">
+                            {contentItem.value}
+                          </h3>
+                        );
+                      case "paragraph":
+                        return (
+                          <p key={contentItem.itemID} className="paragraph">
+                            {contentItem.value}
+                          </p>
+                        );
+                      case "divider":
+                        return (
+                          <hr key={contentItem.itemID} className="divider" />
+                        );
+                      default:
+                        return null;
+                    }
+                  }
+                )
+              ) : (
+                <p>N/A</p>
+              )}
+            </div>
           </div>
         </DialogContent>
       </Dialog>

@@ -30,10 +30,10 @@ import {
 import { useDeleteArticle } from "@/common/hooks";
 
 // helpers
-import { calcTimeAgo, getBlogSummary } from "@/common/helpers";
+import { calcTimeAgo, getBlogSummary, isJsonString } from "@/common/helpers";
 
 // types
-import { Article } from "@/common/types";
+import { Article, ArticleContent } from "@/common/types";
 type ArticleListItemProps = {
   article: Article;
 };
@@ -41,6 +41,7 @@ type ArticleListItemProps = {
 const ArticleListItem: FC<ArticleListItemProps> = ({ article }) => {
   // state
   const [deleting, setDeleting] = useState(false);
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
   const [deleteArticleModalOpen, setDeleteArticleModalOpen] = useState(false);
 
   // hooks
@@ -94,6 +95,7 @@ const ArticleListItem: FC<ArticleListItemProps> = ({ article }) => {
           <div className="flex flex-col md:flex-row md:items-center md:justify-end gap-3.5">
             <Button
               variant="outline"
+              onClick={() => setPreviewModalOpen(true)}
               className=" hover:brightness-90 !text-[#222222]"
             >
               Open Blog
@@ -157,6 +159,63 @@ const ArticleListItem: FC<ArticleListItemProps> = ({ article }) => {
             >
               Cancel
             </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      {/* preview dialog */}
+      <Dialog open={previewModalOpen} onOpenChange={setPreviewModalOpen}>
+        <DialogContent className="bg-white p-6 !max-h-[calc(100vh_-_20%)] !max-w-4xl !w-full overflow-hidden grid-rows-[auto_1fr]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">
+              Article Preview
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 overflow-y-scroll">
+            <div className="max-w-4xl mx-auto py-5">
+              <h2 className="heading">{article.title}</h2>
+              <div className="mb-10">
+                <figure className="flex flex-col gap-5">
+                  <img
+                    src={article.image.url}
+                    alt={article?.image?.alt ?? "N/A"}
+                    className="mx-auto object-contain"
+                  />
+
+                  <figcaption>{article.image?.alt ?? "N/A"}</figcaption>
+                </figure>
+              </div>
+              <hr className="border-black/20 mb-8" />
+              {typeof article?.content === "string" &&
+              isJsonString(article.content) &&
+              Array.isArray(JSON.parse(article.content)) ? (
+                (JSON.parse(article.content) as ArticleContent[]).map(
+                  (contentItem) => {
+                    switch (contentItem.type) {
+                      case "sub-heading":
+                        return (
+                          <h3 key={contentItem.itemID} className="sub-heading">
+                            {contentItem.value}
+                          </h3>
+                        );
+                      case "paragraph":
+                        return (
+                          <p key={contentItem.itemID} className="paragraph">
+                            {contentItem.value}
+                          </p>
+                        );
+                      case "divider":
+                        return (
+                          <hr key={contentItem.itemID} className="divider" />
+                        );
+                      default:
+                        return null;
+                    }
+                  }
+                )
+              ) : (
+                <p>N/A</p>
+              )}
+            </div>
           </div>
         </DialogContent>
       </Dialog>

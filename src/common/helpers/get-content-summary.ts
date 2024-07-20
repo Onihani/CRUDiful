@@ -1,9 +1,5 @@
-type ArticleContent = {
-  id?: string;
-  itemID: string;
-  type: "subheading" | "paragraph" | "divider";
-  value?: string;
-}
+// types 
+import { ArticleContent } from "@/common/types";
 
 import { isJsonString } from ".";
 

@@ -27,3 +27,11 @@ export type BlogContent = {
   itemID: string;
   value?: string | undefined;
 };
+
+
+export type ArticleContent = {
+  id?: string;
+  itemID: string;
+  type: "sub-heading" | "paragraph" | "divider";
+  value?: string;
+}
