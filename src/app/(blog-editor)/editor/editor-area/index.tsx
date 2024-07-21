@@ -35,7 +35,7 @@ const EditorArea: FC<EditorAreaProps> = ({ article, articleType }) => {
     image: article?.image?.url ? article.image : undefined,
     content:
       typeof article?.content === "string" &&
-      isJsonString(articleType) &&
+      isJsonString(article.content) &&
       Array.isArray(JSON.parse(article.content))
         ? JSON.parse(article.content)
         : [
