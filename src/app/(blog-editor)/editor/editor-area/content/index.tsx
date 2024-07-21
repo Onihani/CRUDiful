@@ -88,6 +88,7 @@ const EditorContent = () =>{
     const contentIndex = contentFieldArray.fields.findIndex(
       (field) => field.itemID === id
     );
+    console.log({ id , deleteIndex: contentIndex });
     if (contentIndex) contentFieldArray.remove(contentIndex);
   };
 
@@ -122,6 +123,7 @@ const EditorContent = () =>{
               itemId={field.itemID}
               value={field.value}
               onChange={handleContentChange}
+              onDelete={handleDeleteContent}
             />
           );
         })}
